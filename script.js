@@ -1,3 +1,6 @@
+const navMenu = document.querySelector('.nav-menu');
+const hamburger = document.querySelector('.hamburger');
+
 // Experience Section Accordion
 document.querySelectorAll('.experience-header-toggle').forEach(toggle => {
     toggle.addEventListener('click', function() {
@@ -6,7 +9,7 @@ document.querySelectorAll('.experience-header-toggle').forEach(toggle => {
 
         // Close other open experiences
         document.querySelectorAll('.experience-content').forEach(item => {
-            if (item !== content && item.style.display !== 'none') {
+            if (item !== content) {
                 item.style.display = 'none';
                 const otherIcon = item.previousElementSibling.querySelector('.experience-toggle-icon');
                 if (otherIcon) {
@@ -26,11 +29,9 @@ document.querySelectorAll('.experience-header-toggle').forEach(toggle => {
     });
 });
 
-// ...existing code...
-
-if (hamburger) {
+if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
-        navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        navMenu.classList.toggle('open');
         hamburger.classList.toggle('active');
     });
 }
@@ -39,7 +40,7 @@ if (hamburger) {
 document.querySelectorAll('.nav-menu a').forEach(link => {
     link.addEventListener('click', () => {
         if (navMenu) {
-            navMenu.style.display = 'none';
+            navMenu.classList.remove('open');
             if (hamburger) hamburger.classList.remove('active');
         }
     });
@@ -68,8 +69,7 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('visible');
             observer.unobserve(entry.target);
         }
     });
@@ -77,9 +77,6 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe all sections for animation
 document.querySelectorAll('section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(20px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(section);
 });
 
